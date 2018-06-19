@@ -4,6 +4,7 @@ import org.junit.Test;
 import org.ujmp.core.DenseMatrix;
 import org.ujmp.core.Matrix;
 import org.ujmp.core.SparseMatrix;
+import org.ujmp.core.calculation.Calculation;
 
 public class Matrix0Test {
     @Test
@@ -110,17 +111,47 @@ public class Matrix0Test {
     }
 
     @Test
-    public void inverse() throws Exception {
-        Matrix dense = DenseMatrix.Factory.zeros(10, 10);
-
+    public void rowSum() throws Exception {
+        Matrix dense = DenseMatrix.Factory.zeros(5, 5);
         for (int row = 0; row < dense.getRowCount(); row++) {
-            dense.setAsObject(1, row, row);
-            dense.setAsObject(1, row, row);
+            for (int column = 0; column < dense.getColumnCount(); column++) {
+                dense.setAsInt(column + 1, row, column);
+            }
         }
-
         System.out.println(dense);
-        System.out.println(dense.inv());//逆矩阵
-        System.out.println(dense.pinv());
-        System.out.println(dense.det());
+        System.out.println(dense.getRowList().get(0));
+        System.out.println(dense.getRowList().get(0).getValueSum());
+    }
+
+    @Test
+    public void and() throws Exception {
+        Matrix dense = DenseMatrix.Factory.zeros(5, 5);
+        for (int row = 0; row < dense.getRowCount(); row++) {
+            for (int column = 0; column < dense.getColumnCount(); column++) {
+                dense.setAsInt(column, row, column);
+            }
+        }
+        System.out.println(dense);
+        System.out.println(dense.and(Calculation.Ret.LINK, dense));
+        System.out.println(dense.and(Calculation.Ret.LINK, dense).getRowList());
+        System.out.println(dense.and(Calculation.Ret.LINK, dense).getRowList().get(0).getValueSum());//true=1, false=0
+
+        /**
+         * 内部二值化
+         */
+        dense.and(Calculation.Ret.ORIG, true);
+    }
+
+    @Test
+    public void timesMatrix() throws Exception {
+        Matrix dense = DenseMatrix.Factory.zeros(5, 5);
+        for (int row = 0; row < dense.getRowCount(); row++) {
+            for (int column = 0; column < dense.getColumnCount(); column++) {
+                dense.setAsInt(column, row, column);
+            }
+        }
+        System.out.println(dense);
+        System.out.println(dense.times(dense));
+        System.out.println(dense.times(dense).times(dense));
     }
 }
