@@ -154,4 +154,14 @@ public class Matrix0Test {
         System.out.println(dense.times(dense));
         System.out.println(dense.times(dense).times(dense));
     }
+
+    @Test
+    public void desc() throws Exception {
+        Matrix dense = DenseMatrix.Factory.zeros(5, 5);
+        dense.setDescription("haha, hello world!");
+        System.out.println(dense.getDescription());
+        dense.setLabel("label");
+        dense.setRowLabel(0, "label");
+        System.out.println(dense);
+    }
 }
